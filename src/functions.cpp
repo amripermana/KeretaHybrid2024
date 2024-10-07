@@ -581,7 +581,7 @@ void modbusTCP_init(){
   Mb.C[6] = 1;
   Mb.C[7] = 1;
   Mb.C[8] = 1;
-  Mb.C[8] = 1;
+  Mb.C[9] = 1;
 
   Mb.R[0] = 0;
   Mb.R[1] = 0;
