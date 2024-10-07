@@ -212,34 +212,36 @@ void boot_vvvf(){
 
 void device_check(){
 
+  modbusTCP_update();
+
   lcd.setCursor(0,0);
-  lcd.print("Devices Status : ");
+  lcd.print("Devices Status :    ");
   
   if(bms_stat == true){
     lcd.setCursor(0,1);
-    lcd.print("BMS : OK");
+    lcd.print("BMS : OK            ");
   }
   else{
     lcd.setCursor(0,1);
-    lcd.print("BMS : ERROR");
+    lcd.print("BMS : ERROR         ");
   }
 
   if(dcdc_stat == true){
     lcd.setCursor(0,2);
-    lcd.print("DCDC : OK");
+    lcd.print("DCDC : OK           ");
   }
   else{
     lcd.setCursor(0,2);
-    lcd.print("DCDC : ERROR");
+    lcd.print("DCDC : ERROR        ");
   }
 
   if(vvvf_stat == true){
     lcd.setCursor(0,3);
-    lcd.print("VVVF : OK");
+    lcd.print("VVVF : OK           ");
   }
   else{
     lcd.setCursor(0,3);
-    lcd.print("VVVF : ERROR");
+    lcd.print("VVVF : ERROR        ");
   }
  
 
@@ -579,6 +581,7 @@ void modbusTCP_init(){
   Mb.C[6] = 1;
   Mb.C[7] = 1;
   Mb.C[8] = 1;
+  Mb.C[8] = 1;
 
   Mb.R[0] = 0;
   Mb.R[1] = 0;
@@ -604,6 +607,7 @@ void modbusTCP_update(){
   Mb.C[6] = 1;
   Mb.C[7] = 1;
   Mb.C[8] = 1;
+  Mb.C[9] = vvvf_stat;
 
   Mb.R[0] = vvvf_speed;
   Mb.R[1] = vvvf_torsi;
