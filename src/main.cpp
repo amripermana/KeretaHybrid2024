@@ -5,7 +5,7 @@ CAN_FRAME frame;
 
 void setup() {
   Serial.begin(115200);
-  analogReadResolution(12);
+  analogReadResolution(10);
   Can0.begin(250000);
   Can0.watchFor();
 

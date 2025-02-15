@@ -531,10 +531,10 @@ void display_sensor(){
 }
 
 void read_analog(){
-  dcpt_catenary = analogRead(A0);
-  dcct_catenary = analogRead(A6);
-  dcpt_battery = analogRead(A7);
-  dcct_battery = analogRead(A10);
+  dcpt_catenary = analogRead(A0)*476/100;
+  dcct_catenary = analogRead(A6)*2842/578;
+  dcpt_battery = analogRead(A7)*390/78;
+  dcct_battery = analogRead(A10)*2959/651;
 }
 
 void display_handler(){
@@ -620,7 +620,7 @@ void modbusTCP_update(){
   Mb.R[8] = dcdc_arus_out;
   Mb.R[9] = dcdc_volt_out;
   Mb.R[10] = master_control;
-  Mb.R[11] = 0;
+  Mb.R[11] = 100;
   Mb.R[12] = 0;
   Mb.R[13] = 0;
   Mb.R[14] = 0;
@@ -640,14 +640,19 @@ void DCK_open(){
 
 void proteksi_dck(){
   //proteksi short circuit
-  if(dcct_catenary > 500 || dcct_battery > 500){
+  if(dcct_catenary > 1000.0 || dcct_battery > 1000.0){
     DCK_open();
     lcd.clear();
     while(true){
       lcd.setCursor(0,0);
       lcd.print("Short Circuit");
       lcd.setCursor(0,1);
-      lcd.print("Terdeteksi!");    
+      lcd.print("Terdeteksi!"); 
+
+      Serial.print("arus catenary : ");
+      Serial.print(dcct_catenary);   
+      Serial.print(", arus baterai : ");
+      Serial.println(dcct_battery);   
 
       lcd.setCursor(14,3);
       lcd.print("*Reset");
@@ -657,7 +662,7 @@ void proteksi_dck(){
     }
   }
 
-  if((dcct_battery > 100 && dcct_battery < 500 || (dcct_catenary>100 && dcct_catenary < 500))){
+  if((dcct_battery > 500 && dcct_battery < 500 || (dcct_catenary>500 && dcct_catenary < 500))){
     overcurrent_state = true;
     if(toggle == false){
       overcurrent_time = millis();
